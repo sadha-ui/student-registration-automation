@@ -1,0 +1,220 @@
+{
+  "name": "Student Registration Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Student Registration Form",
+        "formDescription": "Please enter your details to register as a student.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "student_name"
+            },
+            {
+              "fieldLabel": "Email Address",
+              "fieldType": "email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Course",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "AI & DS"
+                  },
+                  {
+                    "option": "Computer Science"
+                  },
+                  {
+                    "option": "Information Science"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Year",
+              "fieldType": "number",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "e58e4bf8-3119-4d4e-856a-bc030d7cb011",
+      "name": "On form submission",
+      "webhookId": "265b0fc0-c04b-40c2-b906-58ae99f7074c"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9ccfa4b2-aacd-4c46-a530-83f838da97db",
+              "name": "student_name",
+              "value": "={{ $json.student_name }}",
+              "type": "string"
+            },
+            {
+              "id": "9a6aacc1-2e85-4dda-892a-a672b4e42ff2",
+              "name": "Email Address",
+              "value": "={{ $json['Email Address'] }}",
+              "type": "string"
+            },
+            {
+              "id": "9c1eeed0-2895-4e6f-a3ac-1ac488f253e1",
+              "name": "Course",
+              "value": "={{ $json.Course }}",
+              "type": "string"
+            },
+            {
+              "id": "8799af5d-64f6-4d13-aafe-f17e403f3646",
+              "name": "Year",
+              "value": "={{ $json.Year }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "a0ad1be2-25c9-4e84-9ca9-a482cb937adc",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1nyJ0BWptumMnmIl59MHD3dZ50k8qnLA5zBYKngGRuj8",
+          "mode": "list",
+          "cachedResultName": "Student Registration Database",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nyJ0BWptumMnmIl59MHD3dZ50k8qnLA5zBYKngGRuj8/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1nyJ0BWptumMnmIl59MHD3dZ50k8qnLA5zBYKngGRuj8/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "student_name": "={{ $json.student_name }}",
+            "email": "={{ $json['Email Address'] }}",
+            "course": "={{ $json['Course'] }}",
+            "year": "={{ $json['Year'] }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "student_name",
+              "displayName": "student_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "course",
+              "displayName": "course",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "year",
+              "displayName": "year",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        448,
+        0
+      ],
+      "id": "b7f9d63d-fc00-4c10-a32f-dd0387f099f0",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "FmtT3uI55OKz9Dot",
+          "name": "Google Sheets account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "586d9ee0-c4a7-4bb4-ba63-5d7471c47eac",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c0c079fb207da7690c1d48af42cedb76e09cd23976fa39309eb503347544626b"
+  },
+  "nodeGroups": [],
+  "id": "VU3OJGTn4onB6dXd",
+  "tags": []
+}
